@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<leyicat>
+	<datasource>
+		<log>QRDbCfg.log</log>
+		<drivers>			
+			<driver>org.gjt.mm.mysql.Driver</driver>			
+		</drivers>
+		<ds code="iot" cpType="druid" sqlType="mysql" user="iot" password="iot79@CD"  
+		    minConnection="4" maxConnection="10" showSql="1" 
+			url="jdbc:mysql://192.168.0.244:3306/iotv2?useUnicode=true&amp;characterEncoding=utf8&amp;
+			TimeBehavior=convertToNull;useSSL=false"/>
+	</datasource>
+	<mvc>
+		<service code="wx" class="com.ycya.weixin.service.WxService" privilege="1"></service>		
+	</mvc>
+	
+	<plugin>
+		<items code="log" plugType="1">
+			<item code="log4j">
+				<param name="log4j.rootLogger">INFO,A1</param>
+				<param name="log4j.appender.A1">org.apache.log4j.RollingFileAppender</param>
+				<param name="log4j.appender.A1.File">${catalina.home}/logs/iot/LyCatSysLog.log</param>
+				<param name="log4j.appender.A1.MaxFileSize">20MB</param>
+				<param name="log4j.appender.A1.MaxBackupIndex">10</param>
+				<param name="log4j.appender.A1.layout">org.apache.log4j.PatternLayout</param>				
+				<param name="log4j.appender.A1.layout.ConversionPattern">[%d{yyyy-MM-dd HH:mm:ss SSS}] -%m%n</param>
+				<!-- 
+				<param name="log4j.appender.A1.BufferedIO">true</param>
+				<param name="log4j.appender.A1.BufferSize">8192</param>-->
+			</item>
+		</items>
+		<items code="cache" ><!--time,lru -->
+			<item code="user" maxSize="0" evictPolicy="0" evictValue="0"></item>
+		</items>
+		<items code="task">
+			<item code="cacheInit" impl="com.ycya.task.SysInitTask" taskType="ITask" startonload="1"></item>
+		</items> 
+		<items code="validate" impl="com.ycya.util.validate.ValidateProvider"></items>
+		
+		 <items code="redis">
+			<item code="one" host="127.0.0.1" port="6379" total="100" idle="10"></item>
+		</items>
+
+	</plugin>
+</leyicat>
